@@ -12,15 +12,20 @@ public class Settings : MonoBehaviour {
     public Toggle Blue;
     public Toggle Green;
     public Toggle Red;
+	public Toggle Yellow;
     public Toggle Player;
     public static int intFlockMembers=0;
     public static int intamountObstacles=0;
     public static bool blue;
     public static bool green;
     public static bool red;
+	public static bool yellow;
     public static bool player;
     public static int count = 0;
-    // Use this for initialization
+
+    /*
+     * Use this for initialization
+     */
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -29,136 +34,123 @@ public class Settings : MonoBehaviour {
     {
         SceneManager.LoadScene("Instructions");
     }
-    public void ChangeScene(string sceneName)       //loads Main Simulation Scene
+
+    /*
+     * Loads Main Simulation Scene
+     */
+    public void ChangeScene(string sceneName)      
     {
         Debug.Log(count);
-        if (count==3)
-        {
+        if (count==3) {
              Error.text="Please select a colour";
             Debug.Log("all unselected");       
-        }
-        else
-        {
-            if (intFlockMembers==0 || intamountObstacles==0)
-            {
+        } else {
+            if (intFlockMembers==0 || intamountObstacles==0) {
                 Error.text=("All input fields require a value");
                 return;
-            }
-            else
-            {
+            } else {
                 Debug.Log("Change scene");
                 SceneManager.LoadScene("MainSimulation");
-            }
-                            
+            }         
         }
     }
 
-    public void FormatObstacles()               //error checking obstacles input field
+    /*
+     * Error checking obstacles input field
+     */
+    public void FormatObstacles()               
     {
-        try
-        {
-            string NumberObstacles = NumberObstacle.text;
+		try {
+			string NumberObstacles = NumberObstacle.text;
             intamountObstacles = Convert.ToInt32(NumberObstacles);
             Debug.Log("Obstacles = " + intamountObstacles);
             Error.text = "";
-            if (intamountObstacles==0)
-            {
+            if (intamountObstacles==0) {
                 NumberObstacle.text = "1";
                 intamountObstacles = 1;
                 Error.text = "Please input amount of obstacles wanted";
             }
-        }
-        catch
-        {
+        } catch {
             NumberObstacle.text = "1";            
             intamountObstacles = 1;
             Error.text = "Please input amount of obstacles wanted";           
         }       
     }
-    public void FormatMembers()                 //error checking number of members
+
+    /*
+     * Error checking number of members
+     */ 
+    public void FormatMembers()             
     {
-        try
-        {
+        try {
             string amountMembers = Flockmembers.text;
             intFlockMembers = Convert.ToInt32(amountMembers);
             Debug.Log("Number Units wanted equals " + intFlockMembers);
             Error.text = "";
-            if (intFlockMembers <= 2)
-            {
+            if (intFlockMembers <= 2) {
                 Error.text = "Flock members must be greater than 2";
                 Debug.Log("Low range error");
-                intFlockMembers = 20;
-                Flockmembers.text = "20";
+                intFlockMembers = 3;
+                Flockmembers.text = "3";
             }
-        }
-        catch
-        {     
+        } catch {     
                 Error.text = "Flock members must be greater than 2";
-                Flockmembers.text = "20";
-                intFlockMembers = 20;
+                Flockmembers.text = "3";
+                intFlockMembers = 3;
                 Debug.Log("catch");   
         }
-
     }
-    /// <summary>
-    /// the following classes all check the boolean inputs for the colour and player creations
-    /// </summary>
+
+    /*
+     * <summary>
+     * The following classes all check the boolean inputs for the colour and player creations.
+     * </summary>
+     */
     public void ToggleBlue()               
     {
-        if (Blue)
-        {
-            blue = true;
-            
-        }
-        else
-        {
+        if (Blue) {
+            blue = true;    
+        } else {
             blue = false;
             count++;
         }
     }
     public void ToggleGreen()
     {
-        if (Green)
-        {
-            green = true;
-            
-        }
-        else
-        {
+        if (Green) {
+            green = true;    
+        } else {
             count++;
             green = false;
         }
     }
     public void ToggleRed()
     {
-        if (Red)
-        {
+        if (Red) {
             red = true;
-            
-        }
-        else
-        {
+        } else {
             count++;
             red = false;
         }
     }
-        public void PlayerToggle()
-    {
-        if (Player==true)
-        {
-            player = true;
-        }
-        else
-        {
-            player = false;
-        }
-    }
-    
-
-
-    
-
-
-   
-
+	public void ToggleYellow()
+	{
+		if (Yellow)
+		{
+			yellow = true;
+		}
+		else
+		{
+			count++;
+			yellow = false;
+		}
+	}
+	public void PlayerToggle()
+	{
+		if (Player == true) {
+			player = true;
+		} else {
+			player = false;
+		}
+	}
 }
