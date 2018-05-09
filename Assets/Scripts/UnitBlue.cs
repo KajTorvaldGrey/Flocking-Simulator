@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitBlue : MonoBehaviour {
+public class UnitBlue : MonoBehaviour 
+{
     public GameObject manager;
     public Vector2 location; //Vector2.zero;     //initialises location, velocity, units goal and the force
     public Vector2 velocity;  //Vector2.zero;

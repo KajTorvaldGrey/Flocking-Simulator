@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class SimManager : MonoBehaviour
@@ -25,6 +24,11 @@ public class SimManager : MonoBehaviour
     public Stack Squares;                               //Stack to hold the Obstacles
     public GameObject manager;
     public GameObject player;
+
+	public System.Object pubOnject;
+
+	public GameObject[] units;
+
     private void Awake()
     {
         //CheckNumbers();
@@ -41,13 +45,14 @@ public class SimManager : MonoBehaviour
 
     public void CheckCreation()         //checks which boolean values the user wants
     {
-
+        
         bool bluetrue = Settings.blue;
         bool greentrue = Settings.green;
         bool redtrue = Settings.red;
         if (bluetrue == false)
         {
-            CreateBlueUnits();
+			var uBlue = new UnitBlue();
+			CreateUnits(unitPrefabB, uBlue.GetType());
             Debug.Log("created blue");
         }
         else
@@ -56,7 +61,8 @@ public class SimManager : MonoBehaviour
         }
         if (greentrue == false)
         {
-            CreateGreenUnits();
+			var uGreen = new UnitGreen();
+			CreateUnits(UnitPrefabG, uGreen.GetType());
         }
         else
         {
@@ -64,7 +70,8 @@ public class SimManager : MonoBehaviour
         }
         if (redtrue == false)
         {
-            CreateRedUnits();
+            var uRed = new UnitRed();
+			CreateUnits(UnitPrefabR, uRed.GetType()) ;
         }
         else
         {
@@ -83,94 +90,15 @@ public class SimManager : MonoBehaviour
     /// <summary>
     /// next three methods create the units for each of the desired colour groups
     /// </summary>
-    public void CreateBlueUnits()
-    {
-        UnitsBlue = new GameObject[NumberUnit];
-        for (int count = 0; count < NumberUnit - 1; count++)
-        {
-            Vector3 FishPosition = new Vector2(Random.Range(spawnDistance.x, spawnDistance.y), Random.Range(spawnDistance.x, spawnDistance.y)); UnitsBlue[count] =
-                  Instantiate(unitPrefabB, this.transform.position + FishPosition, Quaternion.identity);
-            //Vector3 FishPosition = new Vector2(Random.Range(-5f, 5f), Random.Range(-5f, 5f)); UnitsBlue[count] =
-            //       Instantiate(unitPrefab, this.transform.position + FishPosition, Quaternion.identity);
-            UnitsBlue[count].GetComponent<UnitBlue>().manager = this.gameObject;
-        }
-    }
-    void CreateRedUnits()
-    {
-        UnitsRed = new GameObject[NumberUnit];
-        for (int count = 0; count < NumberUnit - 1; count++)
-        {
-            Vector3 FishPosition = new Vector2(Random.Range(spawnDistance.x + 10, spawnDistance.y + 10), Random.Range(spawnDistance.x, spawnDistance.y)); UnitsRed[count] =
-                      Instantiate(UnitPrefabR, this.transform.position + FishPosition, Quaternion.identity);
-            UnitsRed[count].GetComponent<UnitRed>().manager = this.gameObject;
-        }
-    }
-    void CreateGreenUnits()
-    {
-        UnitsGreen = new GameObject[NumberUnit];
-        for (int count = 0; count < NumberUnit - 1; count++)
-        {
-            Vector3 FishPosition = new Vector2(Random.Range(spawnDistance.x - 10, spawnDistance.y - 10), Random.Range(spawnDistance.x, spawnDistance.y)); UnitsGreen[count] =
-                      Instantiate(UnitPrefabG, this.transform.position + FishPosition, Quaternion.identity);
-            UnitsGreen[count].GetComponent<UnitGreen>().manager = this.gameObject;
-        }
-    }
-}
-
-   
-    //public void CreateObstacles()
-    //{
-        //    int Totalspawned = 0;
-        //    Blocks = new GameObject[NumberBlocks];
-        //    for (arraypointer = 0; arraypointer < wantedblocks; arraypointer++)
-        //    {
-
-        //        Vector3 BlockPosition = new Vector2(Random.Range(spawnDistance.x, spawnDistance.y),
-      //            Random.Range(spawnDistance.x, spawnDistance.y));
-    //        Blocks[arraypointer] = Instantiate(hazardprefab, this.transform.position + BlockPosition, Quaternion.identity);
-
-    //        Blocks[arraypointer].GetComponent<UnitBlock>().manager = this.gameObject;
-    //        Totalspawned++;
-
-        //for (int k = Squares.Count; k<wantedblocks; k++)
-        //{
-        //    int randx = Random.Range(-30, 30);
-        //    int randy = Random.Range(-20, 20); 
-
-        //    Squares.Push((GameObject)Instantiate(Obstacle, new Vector3(randx,randy 
-        //        , Obstacle.transform.position.z), Obstacle.transform.rotation));
-           
-        //    Obstacle.AddComponent<UnitBlock>();
-        //    NumberBlocks++;
-        
-        //wantedblocks = 0;
-
-//    void TestObstacles()
-//    {
-//        int testNumber = 4;
-//        int compare = Random.Range(1, 100);
-
-//        if (testNumber == compare)
-//        {
-//            if (wantedblocks > 0)
-//            {
-//                CreateObstacles();
-//            }
-//            if (wantedblocks < 0)
-//            {
-//                wantedblocks = 0;
-//            }
-
-//            if (NumberBlocks < 0)
-//            {
-//                NumberBlocks = 0;
-//            }
-//        }   
-//    }
-
     
-
-//}
-
-
-   
+	public void CreateUnits(GameObject unitsPrefab, Type givenType) {
+		units = new GameObject[NumberUnit];
+		for (int count = 0; count < NumberUnit - 1; count ++) {
+			Vector3 unitPosition = new Vector2(UnityEngine.Random.Range(spawnDistance.x, spawnDistance.y), UnityEngine.Random.Range(spawnDistance.x, spawnDistance.y)); units[count] =
+				Instantiate(unitsPrefab, this.transform.position + unitPosition, Quaternion.identity);
+			pubOnject = Activator.CreateInstance(givenType);
+			Type diamondType = givenType;
+			//units[count].GetComponent<gameObject.GetComponent(givenType)>().manager = this.gameObject;
+		}
+	}
+} 
